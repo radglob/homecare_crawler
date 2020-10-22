@@ -1,0 +1,16 @@
+{
+  "name": "homecare_crawler",
+  "version": "1.0.0",
+  "description": "A crawler for the carepathways site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-csv": "^4.3.2",
+    "puppeteer": "^5.3.1"
+  }
+}
