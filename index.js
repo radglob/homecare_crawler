@@ -135,20 +135,24 @@ const scrapePage = async (page, href, zipCode) => {
 const handleZipCode = async (browser, zipCode) => {
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
-  await page.goto(BASE_URL, { waituntil: 'domcontentloaded' })
-  await page.type('#zipcode', zipCode);
-  await page.keyboard.press('Enter');
-  await page.waitForNavigation();
+  try {
+    await page.goto(BASE_URL, { waituntil: 'domcontentloaded' })
+    await page.type('#zipcode', zipCode);
+    await page.keyboard.press('Enter');
+    await page.waitForNavigation();
 
-  let links = await page.$$eval('#homecare .small-12 a', as => as.map(a => a.href));
-  urls = links.filter(href => href.startsWith(BASE_URL));
-  const data = []
-  for (let url of urls) {
-    const d = await scrapePage(page, url, zipCode)
-    data.push(d)
+    let links = await page.$$eval('#homecare .small-12 a', as => as.map(a => a.href));
+    urls = links.filter(href => href.startsWith(BASE_URL));
+    const data = []
+    for (let url of urls) {
+      const d = await scrapePage(page, url, zipCode)
+      data.push(d)
+    }
+    await page.close();
+    return data
+  } catch(e) {
+    console.error(`Failed to fetch pages for ${zipCode}`)
   }
-  await page.close();
-  return data
 }
 
 (async () => {
